@@ -27,6 +27,7 @@ type UID struct {
 	shardID    uint32
 }
 
+// cau truc cua uid like mongo db shard o application
 func NewUID(localID uint32, objType int, shardID uint32) UID {
 	return UID{
 		localID:    localID,
@@ -35,13 +36,14 @@ func NewUID(localID uint32, objType int, shardID uint32) UID {
 	}
 }
 
+//vi du 12 bit like 64 bit cua uid
 // Shard: 1, Object: 1, ID: 1 => 0001 0001 0001
 // 1 << 8 = 0001 0000 0000
 // 1 << 4 = 		 1 0000
 // 1 << 0 = 			  1
 // => 0001 0001 0001
 func (uid UID) String() string {
-	val := uint64(uid.localID)<<28 | uint64(uid.objectType)<<18 | uint64(uid.shardID)<<0
+	val := uint64(uid.localID)<<28 | uint64(uid.objectType)<<18 | uint64(uid.shardID)<<0 // dung de ghep bit giua cac properties
 	return base58.Encode([]byte(fmt.Sprintf("%v", val)))
 	//return fmt.Sprintf("%X", val)
 }
@@ -59,7 +61,7 @@ func (uid UID) GetObjectType() int {
 }
 
 func DecomposeUID(s string) (UID, error) {
-	uid, err := strconv.ParseUint(s, 10, 64)
+	uid, err := strconv.ParseUint(s, 10, 64) // parse chuoi string ra so
 
 	if err != nil {
 		return UID{}, err
