@@ -12,7 +12,7 @@ type RegisterStorage interface {
 }
 
 type Hasher interface {
-	hash(data string) string
+	Hash(data string) string
 }
 type registerBusiness struct {
 	registerStorage RegisterStorage
@@ -25,22 +25,27 @@ func NewRegisterBusiness(registerStorage RegisterStorage, hasher Hasher) *regist
 		hasher:          hasher,
 	}
 }
-func (biz *registerBusiness) RegisterUser(ctx context.Context, data *usermodel.UserCreate) error {
-	user, _ := biz.registerStorage.FindUser(ctx, map[string]interface{}{"email": data.Email})
+func (business *registerBusiness) Register(ctx context.Context, data *usermodel.UserCreate) error {
+	user, _ := business.registerStorage.FindUser(ctx, map[string]interface{}{"email": data.Email})
 
 	if user != nil {
+		//if user.Status == 0 {
+		//	return error user has been disable
+		//}
 
 		return usermodel.ErrEmailExisted
 	}
+
 	salt := common.GenSalt(50)
 
-	data.Password = biz.hasher.Hash(data.Password + salt)
+	data.Password = business.hasher.Hash(data.Password + salt)
 	data.Salt = salt
-	data.Role = "user"
+	data.Role = "user" // hard code
 
-	if err := biz.registerStorage.CreateUser(ctx, data); err != nil {
+	if err := business.registerStorage.CreateUser(ctx, data); err != nil {
 		return common.ErrCannotCreateEntity(usermodel.EntityName, err)
 	}
 
 	return nil
 }
+

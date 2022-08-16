@@ -6,7 +6,7 @@ type sqlStore struct {
 	userDb *gorm.DB
 }
 
-func (s sqlStore) NewUserStore(userDb *gorm.DB) *sqlStore {
+func NewUserStore(userDb *gorm.DB) *sqlStore {
 	return &sqlStore{userDb: userDb}
 
 }

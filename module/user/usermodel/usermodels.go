@@ -5,6 +5,8 @@ import (
 	"food-delivery-service/common"
 )
 
+const EntityName = "User"
+
 type User struct {
 	common.SQLModel `json:",inline"`
 	Email           string `json:"email" gorm:"column:email;"`
