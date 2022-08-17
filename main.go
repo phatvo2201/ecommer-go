@@ -4,6 +4,7 @@ import (
 	"food-delivery-service/component"
 	"food-delivery-service/middleware"
 	restaurantgin "food-delivery-service/module/restaurant/transport/gin"
+	usertransport "food-delivery-service/module/user/usertransport/ginuser"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -12,7 +13,7 @@ import (
 
 func main() {
 	//dsn := os.Getenv("DB_CONN_STR")
-	dsn := "root:phat@123456@tcp(127.0.0.1:3306)/MANI?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "root:phat@123456@tcp(127.0.0.1:3306)/MANI?charset=utf8mb4&parseTime=True&loc=Local"
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
@@ -27,6 +28,9 @@ func main() {
 
 	appCtx := component.NewAppContext(db)
 	v1 := router.Group("/v1")
+
+	v1.POST("/register", usertransport.Register(appCtx))
+
 	{
 		restaurants := v1.Group("/restaurants")
 		{
