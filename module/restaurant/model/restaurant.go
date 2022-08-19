@@ -13,9 +13,12 @@ var (
 
 type Restaurant struct {
 	common.SQLModel
-	OwnerId int    `json:"owner_id" gorm:"column:owner_id;"`
-	Name    string `json:"name" gorm:"column:name;"`
-	Addr    string `json:"address" gorm:"column:addr;"`
+	OwnerId    int            `json:"owner_id" gorm:"column:owner_id;"`
+	Name       string         `json:"name" gorm:"column:name;"`
+	Addr       string         `json:"address" gorm:"column:addr;"`
+	Logo       *common.Image  `json:"logo" gorm:"column:logo;"`
+	Cover      *common.Images `json:"cover" gorm:"column:cover;"`
+	LikedCount int            `json:"liked_count" gorm:"-"`
 }
 
 func (r *Restaurant) Mask(isAdminOrOwner bool) {

@@ -13,7 +13,7 @@ import (
 
 func main() {
 	//dsn := os.Getenv("DB_CONN_STR")
-	//dsn := "root:phat@123456@tcp(127.0.0.1:3306)/MANI?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:phat@123456@tcp(127.0.0.1:3306)/MANI?charset=utf8mb4&parseTime=True&loc=Local"
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
